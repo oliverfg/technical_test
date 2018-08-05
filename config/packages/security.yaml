@@ -1,7 +1,25 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
+        in_memory:
+            memory:
+                users:
+                    page1:
+                        password: page1
+                        roles: ROLE_PAGE_1
+                    page2:
+                        password: page2
+                        roles: ROLE_PAGE_2
+                    page3:
+                        password: page3
+                        roles: ROLE_PAGE_3
+                    admin:
+                        password: admin
+                        roles: ROLE_ADMIN
+    role_hierarchy:
+        ROLE_USER: [ROLE_PAGE_1, ROLE_PAGE_2, ROLE_PAGE_3]
+        ROLE_ADMIN: ROLE_USER
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
