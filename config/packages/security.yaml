@@ -1,20 +1,23 @@
 security:
+    encoders:
+        App\Entity\User: bcrypt
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory:
             memory:
                 users:
-                    page1:
-                        password: page1
+                    user1:
+                        password: $2y$12$2RCXG.yGSiifNIHtjj9v/OZxtoyvlF3SKeINabWwx3eZvHWX1hpvu
                         roles: ROLE_PAGE_1
-                    page2:
-                        password: page2
+                    user2:
+                        password: $2y$12$dAq3tIHFRVK1j1TKuaznUuzkCBIQhMo979HkFueerl3FW9pWd0d9K
                         roles: ROLE_PAGE_2
-                    page3:
-                        password: page3
+                    user3:
+                        password: $2y$12$yp4IwIWmJK/Oav0NE8FWueW8VZmGff6jAxaOyBr6r5xewCnfnTgCq
                         roles: ROLE_PAGE_3
                     admin:
-                        password: admin
+                        password: $2y$12$g3rQSjACYdxKVIAUypytZemolt6JtMtjfG.YOSK1ZxGyvnhYJ3fqW
                         roles: ROLE_ADMIN
     role_hierarchy:
         ROLE_USER: [ROLE_PAGE_1, ROLE_PAGE_2, ROLE_PAGE_3]
@@ -27,8 +30,13 @@ security:
         main:
             anonymous: true
             form_login:
+                username_parameter: "login[username]"
+                password_parameter: "login[password]"
                 login_path: login
                 check_path: login_check
+            logout:
+                path: logout
+                target: /
 
             # activate different ways to authenticate
 
