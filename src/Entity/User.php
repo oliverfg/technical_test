@@ -23,7 +23,7 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="array")
      */
     private $role;
 
@@ -49,18 +49,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getPassword(): ?string
     {
         return $this->password;
@@ -76,22 +64,23 @@ class User implements UserInterface
     /**
      * Returns the roles granted to the user.
      *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
+     * @return (Role|string)[] The user roles
+     */
+    public function setRoles($role)
+    {
+        $this->role[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Returns the roles granted to the user.
      *
      * @return (Role|string)[] The user roles
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->role;
     }
 
     /**
@@ -112,8 +101,5 @@ class User implements UserInterface
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
-    public function eraseCredentials()
-    {
-        self::setPassword(null);
-    }
+    public function eraseCredentials() { }
 }

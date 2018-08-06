@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AppController extends Controller
 {
@@ -23,37 +20,21 @@ class AppController extends Controller
     /**
      * @Route("/", name="login")
      */
-    public function login(Request $request, UserPasswordEncoderInterface $encoder)
+    public function login(AuthenticationUtils $authenticationUtils)
     {
-        $user = new User();
-        $form = $this->createForm(LoginType::class, $user);
 
-        $form->handleRequest($request);
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
 
-        if ($form->isSubmitted()) {
-            $user = $form->getData();
-            $password = $encoder->encodePassword($user,$user->getPassword());
-            $user->setPassword($password);
-            if (self::loginCheck($user)) {
-                die("ok");
-            }
-            else {
-                $this->session->getFlashBag()->add('info', 'Usuario incorrecto');
-            }
-        }
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('app/index.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->render('app/index.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
     }
 
-    private function loginCheck(User $user)
-    {
-        $client = $this->get('http.client');
-        $response = $client->post('login_check',(array)$user);
-var_dump($response);
-        return true;
-    }
 
     /**
      * @Route("/page1", name="page1")
@@ -62,7 +43,7 @@ var_dump($response);
     public function page1()
     {
         return $this->render('app/page.html.twig', [
-            'controller_name' => 'AppController',
+            'username' => $this->container->get('security.token_storage')->getToken()->getUser()->getUsername(),
         ]);
     }
 
@@ -72,9 +53,8 @@ var_dump($response);
      */
     public function page2()
     {
-
         return $this->render('app/page.html.twig', [
-            'username' => $this->session->getName(),
+            'username' => $this->container->get('security.token_storage')->getToken()->getUser()->getUsername(),
         ]);
     }
 
@@ -85,7 +65,7 @@ var_dump($response);
     public function page3()
     {
         return $this->render('app/page.html.twig', [
-            'username' => $this->session->getName(),
+            'username' => $this->container->get('security.token_storage')->getToken()->getUser()->getUsername(),
         ]);
     }
 
@@ -96,7 +76,7 @@ var_dump($response);
     public function admin()
     {
         return $this->render('app/page.html.twig', [
-            'username' => $this->session->getName(),
+            'username' => $this->container->get('security.token_storage')->getToken()->getUser()->getUsername(),
         ]);
     }
 }

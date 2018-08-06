@@ -1,3 +1,4 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+v1:
+  type: rest
+  prefix: /api/v1
+  resource: "../src/Api/v1/Controller"

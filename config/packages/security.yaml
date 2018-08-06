@@ -4,21 +4,9 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory:
-                users:
-                    user1:
-                        password: $2y$12$2RCXG.yGSiifNIHtjj9v/OZxtoyvlF3SKeINabWwx3eZvHWX1hpvu
-                        roles: ROLE_PAGE_1
-                    user2:
-                        password: $2y$12$dAq3tIHFRVK1j1TKuaznUuzkCBIQhMo979HkFueerl3FW9pWd0d9K
-                        roles: ROLE_PAGE_2
-                    user3:
-                        password: $2y$12$yp4IwIWmJK/Oav0NE8FWueW8VZmGff6jAxaOyBr6r5xewCnfnTgCq
-                        roles: ROLE_PAGE_3
-                    admin:
-                        password: $2y$12$g3rQSjACYdxKVIAUypytZemolt6JtMtjfG.YOSK1ZxGyvnhYJ3fqW
-                        roles: ROLE_ADMIN
+        webservice:
+            id: App\Provider\UserApiProvider
+
     role_hierarchy:
         ROLE_USER: [ROLE_PAGE_1, ROLE_PAGE_2, ROLE_PAGE_3]
         ROLE_ADMIN: ROLE_USER
@@ -30,14 +18,9 @@ security:
         main:
             anonymous: true
             form_login:
-                username_parameter: "login[username]"
-                password_parameter: "login[password]"
                 login_path: login
-                check_path: login_check
-            logout:
-                path: logout
-                target: /
-
+                check_path: login
+                default_target_path: page1
             # activate different ways to authenticate
 
             # http_basic: true
