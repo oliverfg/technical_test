@@ -2,7 +2,7 @@
 
 
 
-###Instalación
+### Instalación
 ```bash
 mkdir test
 cd test
@@ -11,21 +11,21 @@ cd technical_test
 composer update
 
 ```
-###Servidores
-#####Api
+### Servidores
+##### Api
 ```bash
 cd public
 php -S localhost:8001
 ```
-#####Back
+##### Back
 ```bash
 php -S localhost:8000
 ```
 
-###Acceso
+### Acceso
 Acceder a la url http://localhost:8000
 
-###Usuarios
+### Usuarios
 Existen 4 usuarios:
 - username: user1 => password: user1
 - username: user2 => password: user2
