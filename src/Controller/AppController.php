@@ -3,20 +3,12 @@
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AppController extends Controller
 {
-    private $session;
-
-    public function __construct()
-    {
-        $this->session = new Session();
-    }
-
     /**
      * @Route("/", name="login")
      */
@@ -34,7 +26,6 @@ class AppController extends Controller
             'error'         => $error,
         ));
     }
-
 
     /**
      * @Route("/page1", name="page1")
@@ -78,5 +69,13 @@ class AppController extends Controller
         return $this->render('app/page.html.twig', [
             'username' => $this->container->get('security.token_storage')->getToken()->getUser()->getUsername(),
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
+
     }
 }
